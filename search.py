@@ -87,7 +87,7 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-
+#proba para ver si me va bien
     if not problem.isGoalState(problem.getStartState()):
 
         colaPendientes = util.Stack()
