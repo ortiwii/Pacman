@@ -140,28 +140,30 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+
     if not problem.isGoalState(problem.getStartState()):
 
-        colaPendientes = util.PriorityQueue()
-        mirados = []
+        frontier = util.PriorityQueue()
+        explored = []
 
-        # La cola va a ser de la tupla tipo (nodo, camino)
-        tuple =(problem.getStartState(),[])
-        colaPendientes.push(tuple, 0)
-        mirados.append(problem.getStartState())
-        while not colaPendientes.isEmpty():
-            act, camino= colaPendientes.pop()
-            #mirados.append(act)
+        # La cola va a ser de la tupla tipo (nodo, camino, coste)
+        frontier.push((problem.getStartState(),[],0), 0)
 
-            if problem.isGoalState(act):
-                return camino
+        while not frontier.isEmpty():
+            node = frontier.pop()
+            act, camino, costePrevio = node
 
-            for siguiente, accion, coste in problem.getSuccessors(act):
-                nuevoCamino = camino + [accion]
-                colaPendientes.update(accion,coste)
-                if siguiente not in mirados:
-                    mirados.append(siguiente)
-                    colaPendientes.push((siguiente, nuevoCamino), coste)
+            if act not in explored:
+                if problem.isGoalState(act):
+                    return camino
+                else:
+                    explored.append(act)
+                    for siguiente, accion, coste in problem.getSuccessors(act):
+                        nuevoCamino = camino + [accion]
+                        prioridad = costePrevio + coste
+                        frontier.update((siguiente, nuevoCamino, prioridad), prioridad)
+
+
     else:
         return []
 
