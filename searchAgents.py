@@ -40,6 +40,7 @@ from game import Actions
 import util
 import time
 import search
+import numpy as np
 
 class GoWestAgent(Agent):
     "An agent that goes West until it can't."
@@ -373,8 +374,22 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
+    act=state[0]
+    esquinasPendientes=state[1]
+    v1=np.array(act)
+    distantziaLuzea=0   #distantziaMax
+    d=[]
+    for i in esquinasPendientes:
+        v2=np.array(i)
+        #distantzia= np.dot(v1, v2) / (np.linalg.norm(v1) * (np.linalg.norm(v2)))  #distantzia coseno
+        #distantzia=np.linalg.norm(v1-v2, ord=1)  distantzia euklideoa
+        distantzia=np.linalg.norm(v1-v2, ord=1)   #distantzia manhattan
+        d.append(distantzia)
+        if(distantzia>distantziaLuzea):
+            distantziaLuzea=distantzia
+
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    return np.mean(distantziaMotza)# Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
