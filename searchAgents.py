@@ -373,6 +373,7 @@ def cornersHeuristic(state, problem):
     """
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    "*** YOUR CODE HERE ***"
 
     act=state[0]
     esquinasPendientes=state[1]
@@ -381,15 +382,13 @@ def cornersHeuristic(state, problem):
     d=[]
     for i in esquinasPendientes:
         v2=np.array(i)
-        #distantzia= np.dot(v1, v2) / (np.linalg.norm(v1) * (np.linalg.norm(v2)))  #distantzia coseno
-        #distantzia=np.linalg.norm(v1-v2, ord=1)  distantzia euklideoa
         distantzia=np.linalg.norm(v1-v2, ord=1)   #distantzia manhattan
         d.append(distantzia)
         if(distantzia>distantziaLuzea):
             distantziaLuzea=distantzia
 
-    "*** YOUR CODE HERE ***"
-    return np.mean(distantziaMotza)# Default to trivial solution
+
+    return distantziaLuzea
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -481,9 +480,27 @@ def foodHeuristic(state, problem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
+
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+    if problem.isGoalState(state):
+        return 0
+    else:
+        v1 = np.array(position)
+        distancias = []
+        "*** YOUR CODE HERE ***"
+        listaComida = foodGrid.asList()
+        for comida in listaComida:
+
+            # distancia comida al actual
+            v2 = np.array(comida)
+            #distantzia = np.linalg.norm(v1-v2, ord=1)   #distantzia manhattan
+            #distantzia = np.linalg.norm(v1-v2)   #distantzia euclideoa
+            #distantzia = np.dot(v1, v2) / (np.linalg.norm(v1) * (np.linalg.norm(v2)))  #distantzia coseno
+
+            distantzia = mazeDistance(position, comida, problem.startingGameState)
+            distancias.append(distantzia)
+
+    return (max(distancias))
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
